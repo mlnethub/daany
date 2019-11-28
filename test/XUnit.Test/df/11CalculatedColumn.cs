@@ -76,7 +76,7 @@ namespace Unit.Test.DF
             Assert.Equal(7, df.ColCount());
             Assert.Equal(10, newDf.ColCount());
 
-            for (int i = 0; i < newDf.Values.Count; i++)
+            for (int i = 0; i < newDf.Values.Length; i++)
                 Assert.Equal(i+1, newDf.Values[i]);
 
         }
@@ -108,7 +108,7 @@ namespace Unit.Test.DF
             df = df.InsertColumn("col5",d,4);
             Assert.Equal("col5", df.Columns[4]);
 
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.Equal(i + 1, df.Values[i]);
 
         }
@@ -144,7 +144,7 @@ namespace Unit.Test.DF
             Assert.Equal("col2", df.Columns[1]);
             Assert.Equal("col5", df.Columns[4]);
             Assert.Equal("col6", df.Columns[5]);
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.Equal(i + 1, df.Values[i]);
 
         }
@@ -174,7 +174,7 @@ namespace Unit.Test.DF
             df = df.InsertColumn("col10", d);
             Assert.Equal("col10", df.Columns[9]);
 
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.Equal(i + 1, df.Values[i]);
 
         }

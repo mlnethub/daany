@@ -386,7 +386,7 @@ namespace Unit.Test.DF
             var sCols = new string[] { "col11", "col12" };
             var df01 = df.AddCalculatedColumns(sCols, (row, i) => calculate(row, i));
 
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.Equal(i + 1, df.Values[i]);
 
             //local function declaration
@@ -422,7 +422,7 @@ namespace Unit.Test.DF
                 var c1 = new int[] { 11, 23, 35, 47, 59};
                 var c2 = new int[] { 12, 24, 36, 48, 60};
 
-                for (int i = 0; i < df.Values.Count; i++)
+                for (int i = 0; i < df.Values.Length; i++)
                     Assert.Equal(i+1, df.Values[i]);
 
                 //local function declaration
@@ -522,7 +522,7 @@ namespace Unit.Test.DF
 
             //
             Assert.Equal(new string[] {"Count", "Sum", "Top", "Freq", "Mean", "Max" }, newDf.Index);
-            for (int i = 0; i < newDf.Values.Count; i++)
+            for (int i = 0; i < newDf.Values.Length; i++)
                 Assert.Equal(val[i], newDf.Values[i]);
         }
 
@@ -556,7 +556,7 @@ namespace Unit.Test.DF
 
             //
             Assert.Equal(new string[] { "Count", "Unique", "Top", "Freq", "Mean", "Std", "Min", "25%", "Median", "75%", "Max" }, newDf.Index);
-            for (int i = 0; i < newDf.Values.Count; i++)
+            for (int i = 0; i < newDf.Values.Length; i++)
                 Assert.Equal(val[i], newDf.Values[i]);
         }
         [Fact]
@@ -598,7 +598,7 @@ namespace Unit.Test.DF
 
             //
             Assert.Equal(new string[] { "Count", "Unique", "Top", "Freq", "Mean", "Std", "Min", "25%", "Median", "75%", "Max" }, newDf.Index);
-            for (int i = 0; i < newDf.Values.Count; i++)
+            for (int i = 0; i < newDf.Values.Length; i++)
                 Assert.Equal(val[i], newDf.Values[i]);
         }
 
@@ -641,7 +641,7 @@ namespace Unit.Test.DF
 
             //
             Assert.Equal(new string[] { "Count", "Unique", "Top", "Freq", "Mean", "Std", "Min", "25%", "Median", "75%", "Max" }, newDf.Index);
-            for (int i = 0; i < newDf.Values.Count; i++)
+            for (int i = 0; i < newDf.Values.Length; i++)
                 Assert.Equal(val[i], newDf.Values[i]);
         }
 
@@ -684,7 +684,7 @@ namespace Unit.Test.DF
 
             //
             Assert.Equal(new string[] { "Count", "Unique", "Top", "Freq", "Mean", "Std", "Min", "25%", "Median", "75%", "Max" }, newDf.Index);
-            for (int i = 0; i < newDf.Values.Count; i++)
+            for (int i = 0; i < newDf.Values.Length; i++)
                 Assert.Equal(val[i], newDf.Values[i]);
         }
         #endregion
@@ -1119,7 +1119,7 @@ female              Sarajevo
 
             var result = df.SortBy(new string[] { "col1", "col2", "col3", "col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(df1.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
@@ -1153,7 +1153,7 @@ female              Sarajevo
             //reverse sorting
             var result = df.SortByDescending(new string[] { "col1", "col2", "col3", "col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(dfExpected.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);

@@ -98,7 +98,7 @@ namespace Unit.Test.DF
             var retVal = DataFrame.ToCsv(saveDfPath, df);
             var dfsaved = DataFrame.FromCsv(saveDfPath, colTypes:colTy);
             File.Delete(saveDfPath);
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.Equal(dfsaved.Values[i],df.Values[i]);
             Assert.True(retVal);
         }
@@ -122,7 +122,7 @@ namespace Unit.Test.DF
             var retVal = DataFrame.ToCsv(saveDfPath, df);
             var dfsaved = DataFrame.FromCsv(saveDfPath, colTypes: colTy);
             File.Delete(saveDfPath);
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.Equal(dfsaved.Values[i], df.Values[i]);
             Assert.True(retVal);
         }

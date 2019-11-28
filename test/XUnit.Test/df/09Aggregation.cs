@@ -58,7 +58,7 @@ namespace Unit.Test.DF
 
 
             //
-            for (int i = 0; i < rollingdf.Values.Count; i++)
+            for (int i = 0; i < rollingdf.Values.Length; i++)
             {
                 Assert.Equal(rollingdf.Values[i], val[i]);
             }

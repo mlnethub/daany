@@ -28,21 +28,22 @@ namespace Daany
             m_ColCount = dfTypes.Length;
         }
 
-        public List<object> QuickSort(List<object> array, int[] indCols)
+        public object[] QuickSort(object[] array, int[] indCols)
         {
             if (array == null)
                 throw new Exception("data array cannot be null.");
 
-            int end = array.Count / m_ColCount - 1;
-            var sortedList = array.ToList();
+            int end = array.Length / m_ColCount - 1;
+            var sortedList = new object[array.Length];
+            Array.Copy(array, 0,sortedList, 0, array.Length);
             quickSort(sortedList, 0, end, indCols);
             return sortedList;
         }
 
-        public List<object> MergeSort(List<object> array, int[] indCols)
+        public object[] MergeSort(object[] array, int[] indCols)
         {
-            var sortedList = mergeSort(array.ToArray(), indCols);
-            return sortedList.ToList();
+            var sortedList = mergeSort(array, indCols);
+            return sortedList;
         }
 
 
@@ -53,7 +54,7 @@ namespace Daany
         /// <param name="init"></param>
         /// <param name="end"></param>
         /// <param name="cols"></param>
-        private void quickSort(List<object> sortedList, int init, int end, int[] indCols)
+        private void quickSort(object[] sortedList, int init, int end, int[] indCols)
         {
             if (init < end)
             {
@@ -64,7 +65,7 @@ namespace Daany
         }
 
         //O(n)
-        private int partition(List<object> sortedList, int init, int end, int[] indCols)
+        private int partition(object[] sortedList, int init, int end, int[] indCols)
         {
             var last = getRowFromList(sortedList, end);
             int i = init - 1;
@@ -81,14 +82,14 @@ namespace Daany
             return i + 1;
         }
 
-        private IEnumerable<object> getRowFromList(IList<object> list, int jthRow)
+        private IEnumerable<object> getRowFromList(object[] list, int jthRow)
         {
             var start = jthRow * m_ColCount;
             for (int i = start; i < start + m_ColCount; i++)
                 yield return list[i];
         }
 
-        private void swap(List<object> sortedList, int i1, int i2)
+        private void swap(object[] sortedList, int i1, int i2)
         {
             if (i1 == i2)
                 return;

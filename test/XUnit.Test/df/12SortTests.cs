@@ -36,7 +36,7 @@ namespace Unit.Test.DF
 
             var result = df.SortBy(new string[] { "col1", "col2", "col3", "col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(df1.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
@@ -69,7 +69,7 @@ namespace Unit.Test.DF
             //reverse sorting
             var result = df.SortByDescending(new string[] { "col1", "col2", "col3", "col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(dfExpected.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
@@ -104,7 +104,7 @@ namespace Unit.Test.DF
 
             var result = df.SortBy(new string[] { "col1", "col2", "col3", "col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(df1.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
@@ -137,7 +137,7 @@ namespace Unit.Test.DF
             //reverse sorting
             var result = df.SortByDescending(new string[] { "col1", "col2", "col3", "col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(dfExpected.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
@@ -160,14 +160,14 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = false;
             var result = sampleDf.SortBy(new string[] { "Col1", "Col2", "Col3", "Col4" });
             
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(expectedDf.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
                 Assert.Equal<int>(expected, actual);
             }
             //test the original dataframe remained unordered
-            for (int i = 0; i < sampleDf.Values.Count; i++)
+            for (int i = 0; i < sampleDf.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(sampleDf.Values[i]);
                 var actual = Convert.ToInt32(oroginalDf.Values[i]);
@@ -189,14 +189,14 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = true;
             var result = sampleDf.SortBy(new string[] { "Col1", "Col2", "Col3", "Col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(expectedDf.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
                 Assert.Equal<int>(expected, actual);
             }
             //test the original dataframe remained unordered
-            for (int i = 0; i < sampleDf.Values.Count; i++)
+            for (int i = 0; i < sampleDf.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(sampleDf.Values[i]);
                 var actual = Convert.ToInt32(oroginalDf.Values[i]);
@@ -219,14 +219,14 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = false;
             var result = sampleDf.SortByDescending(new string[] { "Col1", "Col2", "Col3", "Col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(expectedDf.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
                 Assert.Equal<int>(expected, actual);
             }
             //test the original dataframe remained unordered
-            for (int i = 0; i < sampleDf.Values.Count; i++)
+            for (int i = 0; i < sampleDf.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(sampleDf.Values[i]);
                 var actual = Convert.ToInt32(oroginalDf.Values[i]);
@@ -248,14 +248,14 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = true;
             var result = sampleDf.SortByDescending(new string[] { "Col1", "Col2", "Col3", "Col4" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(expectedDf.Values[i]);
                 var actual = Convert.ToInt32(result.Values[i]);
                 Assert.Equal<int>(expected, actual);
             }
             //test the original dataframe remained unordered
-            for (int i = 0; i < sampleDf.Values.Count; i++)
+            for (int i = 0; i < sampleDf.Values.Length; i++)
             {
                 var expected = Convert.ToInt32(sampleDf.Values[i]);
                 var actual = Convert.ToInt32(oroginalDf.Values[i]);
@@ -274,7 +274,7 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = false;
             var result = sampleDf.SortBy(new string[] { "machineID", "datetime", "name", "rotate" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 Assert.Equal<object>(expectedDf1.Values[i], result.Values[i]);
             }
@@ -293,7 +293,7 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = true;
             var result = sampleDf.SortBy(new string[] { "machineID", "datetime", "name", "rotate" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 Assert.Equal<object>(expectedDf1.Values[i], result.Values[i]);
             }
@@ -310,7 +310,7 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = false;
             var result = sampleDf.SortByDescending(new string[] { "machineID", "datetime", "name", "rotate" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 Assert.Equal<object>(expectedDf1.Values[i], result.Values[i]);
             }
@@ -329,7 +329,7 @@ namespace Unit.Test.DF
             DataFrame.qsAlgo = true;
             var result = sampleDf.SortByDescending(new string[] { "machineID", "datetime", "name", "rotate" });
 
-            for (int i = 0; i < result.Values.Count; i++)
+            for (int i = 0; i < result.Values.Length; i++)
             {
                 Assert.Equal<object>(expectedDf1.Values[i], result.Values[i]);
             }

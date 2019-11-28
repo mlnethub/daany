@@ -29,7 +29,7 @@ namespace Unit.Test.DF
             var e1 = new object[] { "foo", 1, "foo", 5, "bar", 2, "bar", 6, "baz", 3, "baz", 7 };
             var dd = mergedDf.ToStringBuilder();
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
             //
@@ -37,7 +37,7 @@ namespace Unit.Test.DF
             e1 = new object[] { "foo", 1, "foo", 5, "bar", 2, "bar", 6, "baz", 3, "baz", 7, "foo", 4, DataFrame.NAN, DataFrame.NAN };
             dd = mergedDf.ToStringBuilder();
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
         }
@@ -64,7 +64,7 @@ namespace Unit.Test.DF
             var e1 = new object[] { "foo", 5, "foo", 1, "bar", 6, "bar", 2, "baz", 7, "baz", 3};
             var dd = mergedDf.ToStringBuilder();
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
             //
@@ -72,7 +72,7 @@ namespace Unit.Test.DF
             e1 = new object[] { "foo", 5, "foo", 1, "bar", 6, "bar", 2, "baz", 7, "baz", 3 };
             dd = mergedDf.ToStringBuilder();
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
         }
@@ -101,7 +101,7 @@ namespace Unit.Test.DF
             var e1 = new object[] { "foo", 1, "foo", 5, "bar", 2, "bar", 6, "baz", 3, "baz", 7, "foo", 4, "foo", 5, };
             var dd = mergedDf.ToStringBuilder();
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
             //
@@ -109,7 +109,7 @@ namespace Unit.Test.DF
             e1 = new object[] { "foo", 1, "foo", 5, "bar", 2, "bar", 6, "baz", 3, "baz", 7, "foo", 4, "foo", 5, };
             dd = mergedDf.ToStringBuilder();
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
             //
@@ -142,7 +142,7 @@ namespace Unit.Test.DF
             var e1 = new object[] { "foo", 5, "foo", 1, "foo", 5, "foo",4, "bar", 6, "bar", 2, "baz", 7, "baz", 3,  };
       
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
             //
@@ -150,7 +150,7 @@ namespace Unit.Test.DF
             e1 = new object[] { "foo", 5, "foo", 1, "foo", 5, "foo", 4, "bar", 6, "bar", 2, "baz", 7, "baz", 3, };
       
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
             //
@@ -158,7 +158,7 @@ namespace Unit.Test.DF
             e1 = new object[] { "foo", 5, DataFrame.NAN, DataFrame.NAN, "bar", 6, DataFrame.NAN, DataFrame.NAN, "baz", 7, DataFrame.NAN, DataFrame.NAN, };
          
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
 
         }
@@ -186,7 +186,7 @@ namespace Unit.Test.DF
             var e1 = new object[] { "foo", 1, "foo", 5, "foo", 1, "foo", 8, "bar", 2, "bar", 6, "baz", 3, "baz", 7, "foo", 4, "foo", 5, "foo", 4, "foo", 8 };
 
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
           
         }
@@ -263,7 +263,7 @@ namespace Unit.Test.DF
             var e1 = new object[] { "foo","A",1 ,1, "foo", "A",5, 1, "foo","B",4, 5, "foo", "B",8,5 };
 
             //row test
-            for (int i = 0; i < mergedDf.Values.Count; i++)
+            for (int i = 0; i < mergedDf.Values.Length; i++)
                 Assert.Equal(mergedDf.Values[i], e1[i]);
         }
     }

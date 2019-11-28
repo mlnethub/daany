@@ -57,7 +57,7 @@ namespace Daany
         /// 
         public IList<object> Index => _index;
 
-        internal IList<object> Values => _values;
+        internal object[] Values => _values;
 
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Daany
         /// 1D element contains data frame values
         /// </summary>
         /// 
-        private List<object> _values;
+        private object[] _values;
         private IList<object> _index;
         private List<string> _columns;
         //Quick Sort algorithm. In case of false, the Merge Sort will be used.
@@ -169,7 +169,7 @@ namespace Daany
         {
             this._columns = new List<string>();
             var index = new List<object>();
-            this._values = new List<object>();
+           
 
             //define index and columns
             foreach(var c in aggValues)
@@ -183,14 +183,17 @@ namespace Daany
             }
 
             //fill data frame
-            for(int i=0; i< index.Count; i++)
+            this._values = new object[index.Count*this._columns.Count];
+            int ii = 0;
+            for (int i=0; i< index.Count; i++)
             {
                 for (int j=0; j < this._columns.Count; j++)
                 {
                     if (aggValues.ContainsKey(this._columns[j], index[i]))
-                        this._values.Add(aggValues[this._columns[j], index[i]]);
+                        this._values[ii]= aggValues[this._columns[j], index[i]];
                     else
-                        this._values.Add(DataFrame.NAN);
+                        this._values[ii] = DataFrame.NAN;
+                    ii++;
                 }
             }
             //define index
@@ -222,7 +225,7 @@ namespace Daany
         {
             this._index = index.Select(x=>(object)x).ToList();
             this._columns = columns.ToList();
-            this._values = data.ToList();
+            this._values = data;
         }
 
         /// <summary>
@@ -246,7 +249,7 @@ namespace Daany
 
             this._index = Enumerable.Range(0, rows).Select(x=>(object)x).ToList();
             this._columns = columns.ToList();
-            this._values = data.ToList();
+            this._values = data;
         }
 
         /// <summary>
@@ -259,7 +262,7 @@ namespace Daany
         {
             this._index = index;
             this._columns = columns;
-            this._values = data;
+            this._values = data.ToArray();
         }
 
         /// <summary>
@@ -282,7 +285,7 @@ namespace Daany
 
             this._index = Enumerable.Range(0, rows).Select(x => (object)x).ToList();
             this._columns = columns.ToList();
-            this._values = data;
+            this._values = data.ToArray();
         }
 
         /// <summary>
@@ -308,14 +311,17 @@ namespace Daany
             this._columns = data.Keys.ToList();
 
             //
-            this._values = new List<object>();
-            for (int i = 0; i < _index.Count; i++)
+            this._values = new object[_index.Count * this._columns.Count];
+            int ii = 0;
+            for (int i = 0; i < this._index.Count; i++)
             {
-                for (int j = 0; j < Columns.Count; j++)
+                for (int j = 0; j < this._columns.Count; j++)
                 {
                     var value = data.ElementAt(j).Value[i];
                     var v = parseValue(value, null);
-                    _values.Add(v);
+                    _values[ii] = v;
+
+                    ii++;
                 }
 
             }
@@ -351,7 +357,7 @@ namespace Daany
         {
             var val = Array.Empty<object>();
             var df = new DataFrame();
-            df._values = new List<object>();
+            df._values = new object[0];
             df._index = new List<object>();
             df._columns = columns;
             return df;
@@ -398,11 +404,13 @@ namespace Daany
         /// <param name="df">Add df at the end. It must be the same shape and types as the first df.</param>
         public void Append(DataFrame df)
         {
+            var lst = _values.ToList();
             if (Columns.Count != df.Columns.Count)
                 throw new Exception("Data frames are not consisted!");
 
             // add values
-            _values.AddRange(df._values);
+            lst.AddRange(df._values);
+            this._values = lst.ToArray();
             //add index
             for (int i=0; i < df.Index.Count; i++)
                 this._index.Add(df.Index[i]);
@@ -500,27 +508,30 @@ namespace Daany
             //add new column
             addNewColumnName(this.Columns, colName);
             //
-            var vals = new List<object>();
+            var vals = new object[_index.Count * this._columns.Count];
+            int ii = 0;
             int oldInd = 0;
             //
             for (int i = 0; i < _index.Count; i++)
             {
                 //define processing row before adding column
                 var processingRow = new Dictionary<string, object>();
-                for (int j = 0; j < this.Columns.Count; j++)
+                for (int j = 0; j < this._columns.Count; j++)
                 {
 
                     if (j + 1 >= Columns.Count)
                     {
                         var v = callBack(processingRow, i);
-                        vals.Add(v);
+                        vals[ii] = v;
                     }
                     else
                     {
                         var value = _values[oldInd++];
                         processingRow.Add(this.Columns[j], value);
-                        vals.Add(value);
+                        vals[ii]=value;
                     }
+
+                    ii++;
                 }
             }
             this._values = vals;
@@ -584,8 +595,9 @@ namespace Daany
             //add new columns
             foreach (var colName in colNames)
                 addNewColumnName(this._columns, colName);
+
             //apply new data frame values
-            this._values = vals;
+            this._values = vals.ToArray();
             return true;
         }
 
@@ -640,7 +652,7 @@ namespace Daany
             foreach (var colName in colNames)
                 addNewColumnName(this.Columns, colName);
 
-            this._values = vals;
+            this._values = vals.ToArray();
             return true;
         }
 
@@ -710,6 +722,12 @@ namespace Daany
             return df;
         }
 
+        /// <summary>
+        /// Clip the DF values between the specified number range(minValue, maxValue)
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
         public DataFrame Clip(float minValue, float maxValue)
         {
             //initialize column types
@@ -784,7 +802,13 @@ namespace Daany
             var df = new DataFrame(lst,this.Columns.ToList());
             return df;
         }
-
+        /// <summary>
+        /// Clip the columns values to specified num range (minValue, maxValue)
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
         public DataFrame Clip(float minValue, float maxValue, params string[] columns)
         {
             //initialize column types
@@ -1255,18 +1279,21 @@ namespace Daany
 
         public void InsertRow(int nPos, List<object> row)
         {
+            var lst = this._values.ToList();
             if(nPos== -1 )
             {
-                _values.AddRange(row);
+                lst.AddRange(row);
                 //add row index
                 _index.Add(_index.Count);
             }
             else
             {
                 int ind = nPos * this.ColCount(); 
-                _values.InsertRange(ind, row);
+                lst.InsertRange(ind, row);
                 _index.Insert(nPos, this.RowCount());
-            }            
+            }
+
+            this._values = lst.ToArray();
         }
         /// <summary>
         /// Join two df with Inner or Left join type.
@@ -1617,7 +1644,7 @@ namespace Daany
             var colInd = getColumnIndex(cols);
             //save
             var sdf = new SortDataFrame(colInd, _colsType);
-            List<object> sortedList;
+            object[] sortedList;
             if (qsAlgo)
                 sortedList = sdf.QuickSort(_values, colInd);
             else
@@ -2082,7 +2109,7 @@ namespace Daany
             {
                 var cols = ColCount();
                 var colIndex = getColumnIndex(col);
-                for (int i = colIndex; i < _values.Count; i += cols)
+                for (int i = colIndex; i < _values.Length; i += cols)
                     yield return _values[i];
             }
         }
@@ -2663,7 +2690,7 @@ namespace Daany
                 {
                     k++;
 
-                    if (_values.Count < i + k * Columns.Count)
+                    if (_values.Length < i + k * Columns.Count)
                     {
                         types[i] = ColType.STR;
                         k = 0;

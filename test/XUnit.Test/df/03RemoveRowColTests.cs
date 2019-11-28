@@ -91,7 +91,7 @@ namespace Unit.Test.DF
 
             Assert.True(newDf != null);
 
-            for (int i = 0; i < df.Values.Count; i++)
+            for (int i = 0; i < df.Values.Length; i++)
                 Assert.True(df.Values[i].Equals(newDf.Values[i]));
 
             Assert.Equal(1f, Convert.ToSingle(newDf["product_id", 0]));
