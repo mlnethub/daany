@@ -261,6 +261,8 @@ namespace Daany
         }
 
         #endregion
+
+        #region Private Methods
         private static List<object> parseReader(CsvReader csvReader, ref List<string> columns, ColType[] colTypes, string dateFormats, int nRows, bool parseDate, char[] missingValue)
         {
             //Define header
@@ -533,5 +535,7 @@ namespace Daany
             else
                 return ValueType.None;
         }
+
+        #endregion
     }
 }
