@@ -19,6 +19,41 @@ using System.Text;
 
 namespace Daany
 {
+    
+    public class TwoKeyLookup<T1, T2, TOut>
+    {
+        private ILookup<(T1, T2), TOut> lookup;
+        public TwoKeyLookup(IEnumerable<TOut> source, Func<TOut, (T1, T2)> keySelector)
+        {
+            lookup = source.ToLookup(keySelector);
+        }
+
+        public IEnumerable<TOut> this[T1 first, T2 second]
+        {
+            get
+            {
+                return lookup[(first, second)];
+            }
+        }
+    }
+
+    public class ThreeKeyLookup<T1, T2, T3, TOut>
+    {
+        private ILookup<(T1, T2, T3), TOut> lookup;
+        public ThreeKeyLookup(IEnumerable<TOut> source, Func<TOut, (T1, T2, T3)> keysDefinition)
+        {
+            lookup = source.ToLookup(keysDefinition);
+        }
+
+        public IEnumerable<TOut> this[T1 first, T2 second, T3 third]
+        {
+            get
+            {
+                return lookup[(first, second, third)];
+            }
+        }
+    }
+
     public class ThreeKeysDictionary<K1, K2, K3, T> : Dictionary<K1, Dictionary<K2, Dictionary<K3, T>>>
     {
         public T this[K1 key1, K2 key2, K3 key3]
@@ -212,7 +247,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
             else if(Group2 !=null && Group2.Count > 0)
@@ -223,7 +258,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
             else if (Group3 != null && Group3.Count > 0)
@@ -234,7 +269,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
 
@@ -268,7 +303,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
             else if (Group2 != null && Group2.Count > 0)
@@ -279,7 +314,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
             else if (Group3 != null && Group3.Count > 0)
@@ -290,7 +325,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
 
@@ -315,7 +350,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
             else if (Group2 != null && Group2.Count > 0)
@@ -326,7 +361,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
             else if (Group3 != null && Group3.Count > 0)
@@ -337,7 +372,7 @@ namespace Daany
                     if (df == null)
                         df = new DataFrame(df1);
                     else
-                        df.Append(df1);
+                        df.addRows(df1);
                 }
             }
 
@@ -409,7 +444,6 @@ namespace Daany
         /// <returns></returns>
         public DataFrame GCount()
         {
-            DataFrame df = null;
             var cols = new string[] { GroupedColumn, "count" };
             var lst = new List<object>();
             foreach (var gr in Group.OrderByDescending(x => x.Value.RowCount()))
@@ -423,7 +457,7 @@ namespace Daany
         }
 
         /// <summary>
-        /// Perform trannsformation on each grouped data frame.
+        /// Perform transformation on each grouped data frame.
         /// </summary>
         /// <param name="callBack"></param>
         /// <returns></returns>
@@ -440,7 +474,8 @@ namespace Daany
                 foreach (var gr in Group)
                 {
                     var rows = callBack(gr.Value);
-                    df1.Append(rows);
+                    if(rows!=null && rows.RowCount() > 0)
+                        df1.addRows(rows);
                 }
 
                 return df1;
@@ -454,7 +489,8 @@ namespace Daany
                     foreach (var g2 in gr.Value)
                     {
                         var rows = callBack(g2.Value);
-                        df1.Append(rows);
+                        if (rows != null && rows.RowCount() > 0)
+                            df1.addRows(rows);
                     }
 
                 }
@@ -471,7 +507,8 @@ namespace Daany
                         foreach (var g3 in g2.Value)
                         {
                             var rows = callBack(g3.Value);
-                            df1.Append(rows);
+                            if (rows != null && rows.RowCount() > 0)
+                                df1.addRows(rows);
                         }
                     }
 

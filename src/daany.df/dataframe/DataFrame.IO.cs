@@ -69,6 +69,9 @@ namespace Daany
             File.WriteAllLines(filePath, lst);
             return true;
         }
+
+      
+
         /// <summary>
         /// Saves data frame .NET object in a csv file.
         /// </summary>
@@ -169,6 +172,7 @@ namespace Daany
             var strPath = $"web_csv_{DateTime.Now.Ticks}";
             using (System.Net.WebClient fileDownloader = new System.Net.WebClient())
             {
+
                 fileDownloader.DownloadFile(urlPath, strPath);
             }
              
@@ -270,7 +274,7 @@ namespace Daany
             var listValues = new List<object>();
             while (csvReader.Read())
             {
-                if (nRows >= line)
+                if (nRows !=-1 && nRows < line)
                     break;
                 line++;
 

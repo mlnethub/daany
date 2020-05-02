@@ -10,7 +10,7 @@ Introduction
 for data preparation, feature engineering and other kinds of data
 transformations prior to creating ml-ready data set. It is .NET Core based
 library with ability to run on Windows Linux based distribution and Mac. It is
-based on .NET Standard 2.0.
+based on .NET Standard 2.1.
 
 Besides data analysis, the library implements a set of statistics or data
 science features e.g. time series decompositions, optimization performance
@@ -21,14 +21,14 @@ components:
 
 -   ```Daany.DataFrame```,
 -   ```Daany.Stats```,
--   ```Daany.Math``` and
+-   ```Daany.MathStuff``` and
 -   ```Daany.DataFrame.Ext```
 
 The main ```Daany``` component is ```Daany.DataFrame``` - a data frame implementation for
 data analysis. It is much like ```Pandas``` but the component is not going to follow
 pandas implementation. It is suitable for doing data exploration and preparation
 with ```C# Jupyter Notebook```. In order to create or load data into data frame it
-doesn’t require any predefined class type. In order to defined relevant value type of each column all data are parsed internally during data frame creation. The ```Daany.DataFrame``` implements set of powerful features for data manipulation, handling missing values, calculated columns, merging two or more data frame into one, and similar. It is handy for extracting its rows or columns as series of elements and put into the chart to visualizing the data.
+doesn’t require any predefined class type. In order to defined relevant value type of each column all data are parsed internally during data frame creation. The ```Daany.DataFrame``` implements set of powerful features for data manipulation, handling missing values, calculated columns, merging two or more data frames into one, and similar. It is handy for extracting its rows or columns as series of elements and put into the chart to visualizing the data.
 
 ```Daany.Stat``` is a collection of statistics features e.g. time series
 decompositions, optimization, performance parameters and similar.
@@ -130,8 +130,8 @@ var lst = new List<object>() { 1, "Sarajevo", 77000, "BiH", true, 3.14,DateTime.
 };
 
 //define column header for the data frame
-var columns = new List<string>() { "ID", "City", "Zip Code", "IsHome",
-"Values", "Date" };
+var columns = new List<string>() { "ID", "City", "Zip Code","Country", "IsHome","Values", "Date" };
+
 
 //create data frame with 3 rows and 7 columns
 var df = new DataFrame(lst, columns);
@@ -214,6 +214,20 @@ var colTypes1 = new ColType[] { ColType.I32, ColType.IN, ColType.I32, ColType.ST
 //create data frame with 3 rows and 7 columns
 var dfFromFile = DataFrame.FromCsv(filename, sep: ',', colTypes: colTypes1);
 ```   
+## Loading Data from a Web
+
+Data can be loaded directly from the web storage by using `FromWeb`static method. The following code shows how to load the `Concrete Slump Test` data from the web. The data set includes 103 data points. There are 7 input variables, and 3 output variables in the data set: `Cement`, `Slag`, `Fly ash`, `Water`, `SP`, `Coarse Aggr.`,`Fine Aggr.`, `SLUMP (cm)`, `FLOW (cm)`, `Strength (Mpa)`. 
+The following code load the `Concrete Slump Test` data set into Daany DataFrame:
+
+```csharp
+//define web url where the data is stored
+var url = "https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/slump/slump_test.data";
+//
+var df = DataFrame.FromWeb(url);
+df.Head(5)
+```
+
+
 
 ## Other ways to create a ```DataFrame```
 
@@ -256,7 +270,7 @@ item, or write the same name.
 use similar code like following:
 
 ```csharp
-var cols = new string[] { "Place", "Country", "Zip Code", "Values" };
+var cols = new List<string> { "Place", "Country", "Zip Code", "Values" };
 
 //create empty data frame with 4 columns
 var df = DataFrame.CreateEmpty(cols);
