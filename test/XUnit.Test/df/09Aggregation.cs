@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Xunit;
 using Daany;
 using System.Globalization;
+using Daany.MathStuff;
 
 namespace Unit.Test.DF
 {
@@ -39,9 +40,9 @@ namespace Unit.Test.DF
         {
             //
             var agg = new Dictionary<string, Aggregation[]>();
-            agg.Add("A", new Aggregation[] { Aggregation.Min, Aggregation.Max});
+            agg.Add("A", new Aggregation[] { Aggregation.Min, Aggregation.Max });
             agg.Add("B", new Aggregation[] { Aggregation.Min, Aggregation.Avg, Aggregation.Max });
-            agg.Add("C", new Aggregation[] { Aggregation.Count});
+            agg.Add("C", new Aggregation[] { Aggregation.Count });
             agg.Add("E", new Aggregation[] { Aggregation.Min, Aggregation.Max });
 
             //
@@ -64,7 +65,41 @@ namespace Unit.Test.DF
             }
         }
 
+        [Fact]
+        public void Aggregate_Test02()
+        {
+            //
+            var agg = new Dictionary<string, Aggregation[]>();
+            agg.Add("A", new Aggregation[] { Aggregation.Min, Aggregation.Max });
+            agg.Add("B", new Aggregation[] { Aggregation.Random, Aggregation.Avg, Aggregation.Max });
+            agg.Add("C", new Aggregation[] { Aggregation.Count });
+            agg.Add("E", new Aggregation[] { Aggregation.Min, Aggregation.Max });
 
+            //
+            var df = createDataFrame();
+            var rollingdf = df.Aggragate(agg);
+            var val = new List<object>()
+                //A                 B           C               E
+            { -2.385977,        DataFrame.NAN,      DataFrame.NAN,  DateTime.ParseExact("1/31/2016", "M/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None),
+               2.463718,        3.157577,       DataFrame.NAN,  DateTime.ParseExact("12/20/2016", "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None),
+               DataFrame.NAN,   0.289374,      DataFrame.NAN,  DataFrame.NAN,
+               DataFrame.NAN,   0.540984,      DataFrame.NAN,  DataFrame.NAN,
+               DataFrame.NAN,   DataFrame.NAN,  10,             DataFrame.NAN
+            };
+
+
+            //
+            for (int i = 0; i < rollingdf.Values.Count; i++)
+            {
+                if(i==9)
+                {
+                    var vall = rollingdf.Values[i];
+                    Assert.True(df["B"].Contains(vall));
+                }    
+                else
+                    Assert.Equal(rollingdf.Values[i], val[i]);
+            }
+        }
 
     }
 

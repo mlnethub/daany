@@ -50,6 +50,7 @@ namespace Daany
     }
     public enum Aggregation
     {
+        None,
         First,
         Last,
         Count,
@@ -61,6 +62,7 @@ namespace Daany
         Std,
         Unique,
         Top,
+        Random,
         Mode,
         Median,
         [Description("25%")]

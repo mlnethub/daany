@@ -75,6 +75,11 @@ SOFTWARE.</PackageReleaseNotes>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
+    <PackageReference Include="XPlot.Plotly" Version="3.0.1" />
+  </ItemGroup>
  
 
   <ItemGroup>

@@ -30,8 +30,9 @@ namespace Daany.Ext
     /// <summary>
     /// Set of extension methods for the Daany.DataFrame related to Machine Learning and Data Transformation.
     /// </summary>
-    public static class DataFrameExt
+    public static partial class DataFrameExt
     {
+        [Obsolete("The method will be removed from the library soon. Please use CategoryEncoder instead.")]
         public static DataFrame EncodeColumn(this DataFrame df, MLContext mlContext, string colName, bool encodedOnly = false)
         {
             var colVector = df[colName];
@@ -73,8 +74,8 @@ namespace Daany.Ext
             }
             
         }
-
-        public static DataFrame CategoryToKey(this DataFrame df, MLContext mlContext, string colName)
+        [Obsolete("The method will be removed from the library soon. Please use CategoryEncoder instead.")]
+        public static DataFrame CategoryToKey(this DataFrame df, MLContext mlContext, string colName, bool encodedOnly = false)
         {
             var colVector = df[colName];
             IDataView data = mlContext.Data.LoadFromEnumerable<CategoryColumn>(colVector.Select(x => new CategoryColumn() { Classes = x.ToString() }));
@@ -88,11 +89,17 @@ namespace Daany.Ext
             {
                 colValues.Add((int)r.Classes);
             }
+
             dict.Add(colName+"_cvalues",colValues);
             var newDf = df.AddColumns(dict);
-            return newDf;
-        }
 
+            if (encodedOnly)
+                return newDf[new string[] { colName + "_cvalues" }];
+            else
+                return newDf;
+           
+        }
+        [Obsolete("The method will be removed from the library soon. Please use CategoryEncoder instead.")]
         public static IEnumerable<string> GetLabels(DataViewSchema schema)
         {
             VBuffer<ReadOnlyMemory<char>> labels = new VBuffer<ReadOnlyMemory<char>>();
@@ -118,6 +125,5 @@ namespace Daany.Ext
         }
 
     }
-
    
 }

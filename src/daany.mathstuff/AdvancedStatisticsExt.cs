@@ -519,8 +519,94 @@ namespace Daany.MathStuff
             return rmse/rsr;
         }
 
-       
+        /// <summary>
+        /// Implementation of Moving Average
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="window">Window size</param>
+        /// <returns></returns>
+        public static double[] MA(this double[] data, int window)
+        {
+            double[] average = new double[data.Length - window + 1];
 
+            // The simple moving average picks up one point from the first "window" points of the original data 
+            // and then data.length - window additional points for the rest of the data.
+
+            double windowSum = 0.0;
+            for (int i = 0; i < window; ++i)
+            {
+                windowSum += data[i];
+            }
+
+            average[0] = windowSum / window;
+
+            // Now roll through the additional data subtracting the contribution from the index that has left the window
+            // and adding the contribution from the next index to enter the window. Last window above was [0, window - 1],
+            // so we need to start by removing data[0] and adding data[window] and move forward until we add the
+            // last data point; i.e. until windowEnd == data.length - 1.
+            int windowEnd = window;
+            int windowStart = 0;
+            for (int j = 1; j < data.Length - window + 1; ++j)
+            {
+                // loops data.length - window + 1 - 1 = data.length - window times
+                windowSum += (data[windowEnd] - data[windowStart]);
+                ++windowStart;
+                ++windowEnd;
+                average[j] = windowSum / window;
+            }
+
+            return average;
+        }
+
+        /// <summary>
+        /// Normalizes the data using minmax normalizer
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double[] MinMaxNormalization(this double[] data)
+        {
+            var min = data.Min();
+            var max = data.Max();
+            var retVal = data.Substract(min).Divide(max-min);
+            return retVal;
+        }
+
+        /// <summary>
+        /// Denormalizes the data using min and max values
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double[] MinMaxInverseNormalization(this double[] data, double max, double min)
+        {
+            var retVal = data.Multiply(max-min).Add(min);
+            return retVal;
+        }
+
+        /// <summary>
+        /// Normalizes the data using minmax normalizer
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double[] ZScoreStandardization(this double[] data)
+        {
+            var mean = data.MeanOf();
+            var std = data.Stdev();
+            var retVal = data.Substract(mean).Divide(std);
+            return retVal;
+        }
+
+        /// <summary>
+        /// Perform inverse operation for Z-Score standardization
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="mean"></param>
+        /// <param name="std"></param>
+        /// <returns></returns>
+        public static double[] ZScoreInverseStandardization(this double[] data,double mean, double std)
+        {
+            var retVal = data.Multiply(std).Add(mean);
+            return retVal;
+        }
 
         /// <summary>
         /// transforms the 2D row based array into 2D column based array
