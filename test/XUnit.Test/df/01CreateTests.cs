@@ -86,7 +86,7 @@ namespace Unit.Test.DF
         [Fact]
         public void CreateFromCSVFile_Test01()
         {
-            var filePath = $"..\\..\\..\\testdata\\group_sample_testdata.txt";
+            var filePath = $"testdata/group_sample_testdata.txt";
             var df = DataFrame.FromCsv(filePath: filePath, 
                                                 sep: '\t', 
                                                 names: null, dformat: null);
@@ -97,7 +97,7 @@ namespace Unit.Test.DF
         [Fact]
         public void CreateFromCSVFile_Failed_Test01()
         {
-            var filePath = $"..\\..\\..\\testdata\\group_sample_testdata1.txt";
+            var filePath = $"../../../testdata/group_sample_testdata1.txt";
             
             //invalid path
             var exception = Assert.ThrowsAny<System.ArgumentException>(() => DataFrame.FromCsv(filePath: filePath,
@@ -249,6 +249,29 @@ namespace Unit.Test.DF
                 Assert.Equal(c1f2[i], c2f2[i]);
            
 
+        }
+
+        [Fact]
+        public void CreateDataFrameFromExisted_ByChecking_ColTypes_Test()
+        {
+            var dict = new Dictionary<string, List<object>>
+            {
+                { "itemID",new List<object>() { "foo", "bar", "baz", "foo" } },
+                { "catId",new List<object>() { "A", "A", "B", "B" } },
+                { "value1",new List<object>() { 1,2,3,4 } },
+                { "value2",new List<object>() { true,false,true,true } },
+            };
+
+            //
+            var df1 = new DataFrame(dict);
+            var cT = new ColType[] { ColType.STR, ColType.IN, ColType.I32, ColType.I2 };
+            df1.SetColumnType("catId",ColType.IN);
+
+            Assert.Equal(ColType.IN, df1.ColTypes[1]);
+
+            //create new dataframe
+            var newdf = df1["itemID", "catId", "value1", "value2"];
+            Assert.Equal(newdf.ColTypes, cT);
         }
 
 

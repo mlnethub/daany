@@ -20,10 +20,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using Daany;
-using Microsoft.ML;
-using Microsoft.ML.Data;
-using Microsoft.ML.Tools;
-using Microsoft.ML.Transforms;
+
 using XPlot.Plotly;
 
 namespace Daany.Ext
@@ -36,7 +33,7 @@ namespace Daany.Ext
         public static PlotlyChart Plot(string xLabel, string yLabel, params Series[] series)
         {
 
-            var scatters = series.Select(series => new Graph.Scatter()
+            var scatters = series.Select(series => new Scatter()
             {
                 name = series.Name,
 

@@ -1,5 +1,4 @@
-﻿//Source: https://github.com/dotnet/machinelearning-samples 
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.ML.Data;
@@ -7,8 +6,7 @@ using Microsoft.ML;
 using static Microsoft.ML.TrainCatalogBase;
 using System.Diagnostics;
 
-
-namespace Daany.Ext
+namespace Daany.Util
 {
     public static class ConsoleHelper
     {
@@ -58,6 +56,16 @@ namespace Daany.Ext
             Console.WriteLine($"************************************************************");
         }
 
+        public static void PrintAnomalyDetectionMetrics(string name, AnomalyDetectionMetrics metrics)
+        {
+            Console.WriteLine($"************************************************************");
+            Console.WriteLine($"*       Metrics for {name} anomaly detection model      ");
+            Console.WriteLine($"*-----------------------------------------------------------");
+            Console.WriteLine($"*       Area Under ROC Curve:                       {metrics.AreaUnderRocCurve:P2}");
+            Console.WriteLine($"*       Detection rate at false positive count: {metrics.DetectionRateAtFalsePositiveCount}");
+            Console.WriteLine($"************************************************************");
+        }
+
         public static void PrintMultiClassClassificationMetrics(string name, MulticlassClassificationMetrics metrics)
         {
             Console.WriteLine($"************************************************************");
@@ -71,7 +79,7 @@ namespace Daany.Ext
             Console.WriteLine($"    LogLoss for class 3 = {metrics.PerClassLogLoss[2]:0.####}, the closer to 0, the better");
             Console.WriteLine($"************************************************************");
         }
-       
+
         public static void PrintRegressionFoldsAverageMetrics(string algorithmName, IReadOnlyList<CrossValidationResult<RegressionMetrics>> crossValidationResults)
         {
             var L1 = crossValidationResults.Select(r => r.Metrics.MeanAbsoluteError);
@@ -129,17 +137,17 @@ namespace Daany.Ext
 
         }
 
-        public static double CalculateStandardDeviation (IEnumerable<double> values)
+        public static double CalculateStandardDeviation(IEnumerable<double> values)
         {
             double average = values.Average();
             double sumOfSquaresOfDifferences = values.Select(val => (val - average) * (val - average)).Sum();
-            double standardDeviation = Math.Sqrt(sumOfSquaresOfDifferences / (values.Count()-1));
+            double standardDeviation = Math.Sqrt(sumOfSquaresOfDifferences / (values.Count() - 1));
             return standardDeviation;
         }
 
         public static double CalculateConfidenceInterval95(IEnumerable<double> values)
         {
-            double confidenceInterval95 = 1.96 * CalculateStandardDeviation(values) / Math.Sqrt((values.Count()-1));
+            double confidenceInterval95 = 1.96 * CalculateStandardDeviation(values) / Math.Sqrt((values.Count() - 1));
             return confidenceInterval95;
         }
 
@@ -159,7 +167,7 @@ namespace Daany.Ext
             ConsoleWriteHeader(msg);
 
             var preViewTransformedData = dataView.Preview(maxRows: numberOfRows);
-            var lst = new List<string>();
+
             foreach (var row in preViewTransformedData.RowView)
             {
                 var ColumnCollection = row.Values;
@@ -168,11 +176,8 @@ namespace Daany.Ext
                 {
                     lineToPrint += $"| {column.Key}:{column.Value}";
                 }
-                lst.Add(lineToPrint);
                 Console.WriteLine(lineToPrint + "\n");
-                
             }
-            System.IO.File.WriteAllLines("../../../../../../dataset/titanic/train_balanced.csv", lst);
         }
 
         [Conditional("DEBUG")]
@@ -182,11 +187,11 @@ namespace Daany.Ext
             string msg = string.Format("Peek data in DataView: Showing {0} rows with the columns", numberOfRows.ToString());
             ConsoleWriteHeader(msg);
 
-            //https://github.com/dotnet/machinelearning/blob/master/docs/code/MlNetCookBook.md#how-do-i-look-at-the-intermediate-data
+            //https://github.com/dotnet/machinelearning/blob/main/docs/code/MlNetCookBook.md#how-do-i-look-at-the-intermediate-data
             var transformer = pipeline.Fit(dataView);
             var transformedData = transformer.Transform(dataView);
 
-            // 'transformedData' is a 'promise' of data, lazy-loading. call Preview  
+            // 'transformedData' is a 'promise' of data, lazy-loading. call Preview
             //and iterate through the returned collection from preview.
 
             var preViewTransformedData = transformedData.Preview(maxRows: numberOfRows);
@@ -207,7 +212,7 @@ namespace Daany.Ext
         // This method using 'DebuggerExtensions.Preview()' should only be used when debugging/developing, not for release/production trainings
         public static void PeekVectorColumnDataInConsole(MLContext mlContext, string columnName, IDataView dataView, IEstimator<ITransformer> pipeline, int numberOfRows = 4)
         {
-            string msg = string.Format("Peek data in DataView: : Show {0} rows with just the '{1}' column", numberOfRows, columnName );
+            string msg = string.Format("Peek data in DataView: : Show {0} rows with just the '{1}' column", numberOfRows, columnName);
             ConsoleWriteHeader(msg);
 
             var transformer = pipeline.Fit(dataView);
@@ -217,33 +222,23 @@ namespace Daany.Ext
             var someColumnData = transformedData.GetColumn<float[]>(columnName)
                                                         .Take(numberOfRows).ToList();
 
-
             // print to console the peeked rows
-            someColumnData.ForEach(row => {
-                                            String concatColumn = String.Empty;
-                                            foreach (float f in row)
-                                            {
-                                                concatColumn +="|" + f.ToString();                                              
-                                            }
-                                            Console.WriteLine(";"+concatColumn);
-                                          });
-        }
 
-        public static void PrintHead(Daany.DataFrame df, int count=5)
-        {
-            string msg = string.Format($"{string.Join(",",df.Columns)}");
-            ConsoleWriteHeader(msg);
-            //int cnt = 0;
-            //foreach(var r in df.GetDicEnumerator())
-            //{
-            //    var str = r.Select(x => x != null ? x.ToString() : "").ToArray();
-            //    string msg1 = string.Format($"{string.Join(",", str)}");
-            //    Console.WriteLine(msg1);
-            //    Console.WriteLine("--");
-            //    if (++cnt > count)
-            //        break;
-            //}
-           
+            int currentRow = 0;
+            someColumnData.ForEach(row => {
+                currentRow++;
+                String concatColumn = String.Empty;
+                foreach (float f in row)
+                {
+                    concatColumn += f.ToString();
+                }
+
+                Console.WriteLine();
+                string rowMsg = string.Format("**** Row {0} with '{1}' field value ****", currentRow, columnName);
+                Console.WriteLine(rowMsg);
+                Console.WriteLine(concatColumn);
+                Console.WriteLine();
+            });
         }
 
         public static void ConsoleWriteHeader(params string[] lines)
@@ -271,17 +266,6 @@ namespace Daany.Ext
             }
             var maxLength = lines.Select(x => x.Length).Max();
             Console.WriteLine(new string('-', maxLength));
-            Console.ForegroundColor = defaultColor;
-        }
-
-        public static void ConsolePrintConfusionMatrix(ConfusionMatrix confusionMatrix)
-        {
-            var defaultColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(" ");
-            var cm = confusionMatrix.GetFormattedConfusionTable();
-            Console.Write(cm);
-            
             Console.ForegroundColor = defaultColor;
         }
 

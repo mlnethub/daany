@@ -42,7 +42,7 @@ namespace Unit.Test.DF
 
             //
             var filteredDF = df.Filter("col1", 5, FilterOperator.GreatherOrEqual);
-
+            
             Assert.True(filteredDF.RowCount() == 9);
             Assert.True(filteredDF[0,0].ToString() == "11");
             Assert.True(filteredDF[1, 1].ToString() == "22");
@@ -56,7 +56,7 @@ namespace Unit.Test.DF
         public void Filter_Multiple_Columns_Test01()
         {
             //Text,Tag,Datum, Double,IntCol
-            var df = DataFrame.FromCsv(filePath: $"..\\..\\..\\testdata\\filter_dataFrameSample.txt", sep: '\t', names: null, parseDate:true);
+            var df = DataFrame.FromCsv(filePath: $"testdata/filter_dataFrameSample.txt", sep: '\t', names: null, parseDate:true);
 
             //filter by one numeric column
             var filteredDF = df.Filter("Double", 0.05, FilterOperator.Less);

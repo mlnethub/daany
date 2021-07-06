@@ -9,7 +9,7 @@ namespace Unit.Test.DF
 {
     public class UserGuide
     {
-        string rootfolder = "..\\..\\..\\testdata\\";
+        string rootfolder = "testdata/";
 
         #region Create DF
         [Fact]
@@ -23,7 +23,7 @@ namespace Unit.Test.DF
             var columns = new List<string>() { "ID", "City", "Zip Code", "State","IsHome", "Values", "Date" };
 
             //create data frame with 3 rows and 7 columns
-            var df = new DataFrame(lst, columns);
+            var df = new DataFrame(lst, columns, null);
 
             //check the size of the data frame
             Assert.Equal(3, df.RowCount());
@@ -1078,11 +1078,11 @@ namespace Unit.Test.DF
 male                
         ID      City    Zip CodeState   IsHome  Values  Age     Gender  
 0       1       Sarajevo71000   BiH     True    3.14    31      male    
-1       3       Berlin  10115   GER     False   4.55    45      male    
+2       3       Berlin  10115   GER     False   4.55    45      male    
 
 female              
         ID      City    Zip CodeState   IsHome  Values  Age     Gender  
-0       2       Seattle 98101   USA     False   3.21    25      female  
+1       2       Seattle 98101   USA     False   3.21    25      female  
 
 ";
             Assert.Equal(str, swqs);
@@ -1116,11 +1116,11 @@ male                Sarajevo
 
 Berlin              
         ID      City    Zip CodeState   IsHome  Values  Age     Gender  
-0       3       Berlin  10115   GER     False   4.55    45      male    
+2       3       Berlin  10115   GER     False   4.55    45      male    
 
 female              Sarajevo            
         ID      City    Zip CodeState   IsHome  Values  Age     Gender  
-0       2       Sarajevo98101   USA     False   3.21    25      female  
+1       2       Sarajevo98101   USA     False   3.21    25      female  
 
 ";
             Assert.Equal(str, swqs);
@@ -1149,8 +1149,8 @@ female              Sarajevo
             //create df
             var df = new DataFrame(dict);
             //group df by gender
-            var gDf = df.GroupBy("Gender").Rolling(2, 2, new Dictionary<string, Aggregation>() { { "Values", Aggregation.Sum }, 
-                                                                                                 { "Age", Aggregation.Avg } });
+            var gDf = df.GroupBy("Gender").Rolling(2, new Dictionary<string, Aggregation>() { { "Values", Aggregation.Sum }, 
+                                                                                                 { "Age", Aggregation.Avg } }).TakeEvery(2);
             //check result
             Assert.Equal(7.69, gDf["Values", 0]);
             Assert.Equal(8.76, gDf["Values", 1]);

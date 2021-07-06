@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon />
+    <StartupObject />
+    <Platforms>AnyCPU;x64</Platforms>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Configurations>Debug;Release;Linux</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Daany.DataFrame" Version="1.0.1" />
+    <PackageReference Include="Daany.DataFrame.Ext" Version="1.0.1" />
+    <PackageReference Include="Daany.LinA-win-x64" Version="1.0.1" />
+    <PackageReference Include="Daany.Stat" Version="1.0.1" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.0-Preview1" />
+    <PackageReference Include="OxyPlot.WindowsForms" Version="2.1.0-Preview1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\daany.util\daany.util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AirPassengers.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

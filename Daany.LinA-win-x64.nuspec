@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>Daany.LinA-win-x64</id>
+        <version>1.1.0</version>
+        <authors>Bahrudin Hrnjica, bhrnjica</authors>
+        <owners>bhrnjica</owners>
+		<icon>daanyIcon.png</icon>
+        <projectUrl>https://github.com/bhrnjica/daany</projectUrl>
+		<repository type="git" url="https://github.com/bhrnjica/daany.git" />
+		<license type="expression">MIT</license>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<releaseNotes> </releaseNotes>
+        <title>Daany.LinA</title>
+        <description>Daany.LinA - .NET wrapper for selected routines of MKL LAPACK and BLASS.</description>
+		<summary>Daany.LinA - .NET wrapper for selected routines of MKL LAPACK and BLASS.</summary >
+        <copyright>Copyright ©2020-2021 Bahrudin Hrnjica</copyright>
+        <tags>linear algebra, math, matrix, lapack, blass, data preparation, data analytics</tags>
+        <dependencies>
+		<group targetFramework=".NETStandard2.1">
+			<dependency id="intelmkl.redist.win-x64" version="2021.2.0.296" />	
+			<dependency id="intelopenmp.redist.win" version="2021.2.0.616" />
+			<dependency id="inteltbb.redist.win" version="2021.2.0.371" />
+		</group>			
+        </dependencies>
+    </metadata>
+    <!-- A readme.txt to display when the package is installed <file src="daanyIcon.png"/> -->
+    <files>
+        <file src="README.MD"/>	
+		<file src="daanyIcon.png"/>
+		<file src="LICENSE"/>
+		<file src="src/daany.lina/bin/Release/netstandard2.1/Daany.LinA.dll" target="lib/netstandard2.1" />
+    </files>
+</package>

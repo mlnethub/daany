@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
     <Platforms>AnyCPU;x64</Platforms>
     <RootNamespace>Daany</RootNamespace>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -46,9 +47,9 @@ SOFTWARE.</PackageReleaseNotes>
     <ApplicationIcon>daany.ico</ApplicationIcon>
     <AssemblyName>Daany.MathStuff</AssemblyName>
     <dependencies>
-      <group targetFramework="netstandard2.0" />
+      <group targetFramework="netstandard2.1" />
     </dependencies>
-    
+    <Configurations>Debug;Release;Linux</Configurations>   
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE">
@@ -73,9 +74,4 @@ SOFTWARE.</PackageReleaseNotes>
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-  
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if $(ConfigurationName) == Release copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;..\..\lib\$(TargetName).dll&quot;" />
-  </Target>
-
 </Project>
